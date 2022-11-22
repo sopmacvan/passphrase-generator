@@ -1,10 +1,17 @@
 from secrets import choice
 import string
-import win32clipboard
 
-with open('wordlists/eff_large_wordlist.txt_new') as f:
-    # get all words from wordlist
-    words = [word.strip() for word in f]
+# get all words from wordlists
+f1 = open('wordlists/eff_large_wordlist.txt_new')
+f2 = open('wordlists/eff_short_wordlist_1.txt_new')
+f3 = open('wordlists/eff_short_wordlist_2_0.txt_new')
+
+words = [word.strip() for word in f1] + \
+        [word.strip() for word in f2] + \
+        [word.strip() for word in f3]
+f1.close()
+f2.close()
+f3.close()
 
 
 def generate_passphrase(n=3, delimiter='-', include_number=True, include_uppercase=True):
@@ -33,16 +40,3 @@ def generate_passphrase(n=3, delimiter='-', include_number=True, include_upperca
         passphrase = passphrase.title()
 
     return passphrase
-
-
-def copy_passphrase(text):
-    """
-    Copy passphrase to clipboard.
-
-    :param text: str
-    :return:
-    """
-    win32clipboard.OpenClipboard()
-    win32clipboard.EmptyClipboard()
-    win32clipboard.SetClipboardText(text, win32clipboard.CF_UNICODETEXT)
-    win32clipboard.CloseClipboard()

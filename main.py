@@ -1,4 +1,5 @@
-from passphrase import generate_passphrase, copy_passphrase
+from passphrase import generate_passphrase
+import pyperclip
 import PySimpleGUI as sg
 
 
@@ -62,7 +63,8 @@ def create_window_layout(prev_settings):
                       [sg.Text('Include number')],
                       [sg.Text('Include Uppercase')]
                   ]), sg.Column([
-                      [sg.Input(size=(2, 1), default_text=prev_settings.get('word_count', 3), key='-WORD COUNT-')],
+                      [sg.Input(size=(2, 1), default_text=fix_num(prev_settings.get('word_count', 3)),
+                                key='-WORD COUNT-')],
                       [sg.Input(size=(2, 1), default_text=prev_settings.get('delimiter', '-'), key='-DELIMITER-')],
                       [sg.Checkbox('', default=prev_settings.get('include_number', True), key='-INCLUDE NUMBER-')],
                       [sg.Checkbox('', default=prev_settings.get('include_uppercase', True),
@@ -109,19 +111,23 @@ def main():
             window['-PASSPHRASE-'].update(passphrase)
             window['-WORD COUNT-'].update(n)
 
-        # Copy passphrase if user clicks the copy button
+        # Copy passphrase to clipboard if user clicks the copy button
         if event == '-COPY-':
-            copy_passphrase(window['-PASSPHRASE-'].get())
+            passphrase = window['-PASSPHRASE-'].get()
+            pyperclip.copy(passphrase)
 
         # Show/hide password history
         if event == '-SHOW HISTORY-':
             visible = False if window['-COLUMN HISTORY-'].visible else True
             window['-COLUMN HISTORY-'].update(visible=visible)
 
-        # Copy selected passphrase from password history if user clicks one
+        # Copy selected passphrase to clipboard if user clicks one
         if event == '-PASSWORD HISTORY-':
-            copy_passphrase(window['-PASSWORD HISTORY-'].get()[0])
-
+            try:
+                passphrase = window['-PASSWORD HISTORY-'].get()[0]
+                pyperclip.copy(passphrase)
+            except IndexError:
+                pass
         # Clear history
         if event == '-CLEAR HISTORY-':
             clear_history()
