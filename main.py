@@ -2,6 +2,7 @@ from passphrase import generate_passphrase
 import pyperclip
 import PySimpleGUI as sg
 
+#----------- Sample -----------------#
 
 # ---------- MISCELLANEOUS ----------#
 def fix_num(n):
@@ -40,7 +41,6 @@ def clear_history():
     with open('user/history.txt', 'w') as f:
         f.write('')
 
-
 # ---------- USER INTERFACE AND EVENT LOOP ----------#
 
 def create_window_layout(prev_settings):
@@ -50,19 +50,30 @@ def create_window_layout(prev_settings):
                                              prev_settings.get('include_uppercase', True))
     append_history(initial_passphrase)
 
+    sg.theme('DarkBlack')
+
     # Define the window's layout
     layout = [
-        [sg.Text(initial_passphrase, key='-PASSPHRASE-')],
-        [sg.Button('Generate Passphrase', key='-GENERATE-')],
-        [sg.Button('Copy Passphrase', key='-COPY-')],
+        # Custom exit button 
+        #[sg.Button('x',key='-EXIT-')],
+        # Passphrase Generator Top-Left Text
+        [sg.Text('PASSPHRASE\nGENERATOR', background_color='#000000', text_color='#F8EF00', font=('Tomorrow',40,'bold'),size=(100,2))],
+        # Initial Passphrase 
+        [sg.Text(initial_passphrase, key='-PASSPHRASE-',background_color='#001819',border_width='32',text_color='#00F0FF',font=('Tomorrow',16),size=(100,1))],
+        # Generate Password Button
+        [sg.Button('Generate Password', key='-GENERATE-', button_color=('black','#F8EF00'), font=('Helvetica',16),size=(100,2))],
+        # Copy Passphrase Button
+        [sg.Button('Copy Password', key='-COPY-', button_color=('black','#F8EF00'), font=('Helvetica',16),size=(100,2))],
 
-        [sg.Frame(title='Customize',
+        [sg.Frame(title='Customize', background_color='#000000',font=('Tomorrow',20),
                   layout=[[sg.Column([
-                      [sg.Text('Set word count')],
-                      [sg.Text('Set delimiter')],
-                      [sg.Text('Include number')],
-                      [sg.Text('Include Uppercase')]
+                    # Text: 
+                      [sg.Text('Set word count',background_color='#000000',font=('Tomorrow',20))],
+                      [sg.Text('Set delimiter',background_color='#000000',font=('Tomorrow',20))],
+                      [sg.Text('Include number',background_color='#000000',font=('Tomorrow',20))],
+                      [sg.Text('Include Uppercase',font=('Tomorrow',20))]
                   ]), sg.Column([
+                    # Inputs & Checkbox
                       [sg.Input(size=(2, 1), default_text=fix_num(prev_settings.get('word_count', 3)),
                                 key='-WORD COUNT-')],
                       [sg.Input(size=(2, 1), default_text=prev_settings.get('delimiter', '-'), key='-DELIMITER-')],
@@ -72,23 +83,36 @@ def create_window_layout(prev_settings):
 
                   ])]],
                   expand_x=True)],
-        [sg.Text('Password History', enable_events=True, tooltip='Show/hide password history', key='-SHOW HISTORY-')],
+        # Text:
+        [sg.Text('Password History', enable_events=True, tooltip='Show/hide password history', key='-SHOW HISTORY-',font=('Tomorrow',20))],
         [sg.pin(sg.Column([
-            [sg.Listbox(values=load_history(), size=(0, 3), expand_x=True, enable_events=True,
+            # Listbox :
+            [sg.Listbox(values=load_history(), size=(0, 5), font=('Tomorrow',16), expand_x=True, enable_events=True,
                         key='-PASSWORD HISTORY-')],
-            [sg.Button('Clear Password', key='-CLEAR HISTORY-')]
+            # Clear History Button
+            [sg.Button('Clear History', key='-CLEAR HISTORY-', button_color=('#F8EF00','black'),font=('Tomorrow',16),size=(100,1))]
         ],
             visible=False, expand_x=True, key='-COLUMN HISTORY-'), expand_x=True)],
-
     ]
 
-    return sg.Window('Passphrase Generator', layout)
+    # UI: Set Window Size & BG Color
+    return sg.Window('Passphrase Generator', layout,size=(430,850),background_color='#000000')
 
+                    # UI: For borderless window
+
+                    #default_element_size=(12, 1),
+                    #text_justification='r',
+                    #auto_size_text=False,
+                    #auto_size_buttons=False,
+                        #no_titlebar=True,
+                        #grab_anywhere=True,
+                    #default_button_element_size=(12, 1)
 
 def main():
     settings = sg.UserSettings(filename='user/settings.json', autosave=True)
-
+    
     window = create_window_layout(settings)
+
     # Event Loop
     while True:
         event, values = window.read()
@@ -96,6 +120,10 @@ def main():
         if event == sg.WIN_CLOSED:
             save_settings(settings, window.key_dict)
             break
+
+        # Event for exit button
+        if event == '-EXIT-':
+            window.close()
 
         # Generate a passphrase if user clicks the generate button
         if event == '-GENERATE-':
@@ -135,7 +163,6 @@ def main():
 
     # Close window
     window.close()
-
 
 if __name__ == '__main__':
     main()
