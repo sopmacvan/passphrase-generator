@@ -7,14 +7,15 @@ import PySimpleGUI as sg
 # ---------- MISCELLANEOUS ----------#
 def fix_num(n):
     # use 3 as default if n is not a  number
+    min_limit = 3
+    max_limit = 10
     try:
         n = int(n)
     except ValueError:
-        n = 3
+        return min_limit
     # Set word limit of 3-10
-    n = 3 if n < 3 else n
-    n = 10 if n > 10 else n
-
+    n = min_limit if n < min_limit else n
+    n = max_limit if n > max_limit else n
     return n
 
 
