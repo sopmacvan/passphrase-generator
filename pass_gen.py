@@ -16,6 +16,8 @@ f2.close()
 f3.close()
 
 
+# ---------- MISCELLANEOUS ----------#
+
 def generate(n=3, delimiter='-', include_number=True, include_uppercase=True):
     """
     Create a passphrase with n number of words,
@@ -44,7 +46,6 @@ def generate(n=3, delimiter='-', include_number=True, include_uppercase=True):
     return passphrase
 
 
-# ---------- MISCELLANEOUS ----------#
 def fix_num(n):
     # use 3 as default if n is not a  number
     min_limit = 3
@@ -85,7 +86,7 @@ def clear_history():
 
 # ---------- USER INTERFACE AND EVENT LOOP ----------#
 
-def create_window_layout(prev_settings):
+def create_gen_window(prev_settings):
     initial_passphrase = generate(fix_num(prev_settings.get('word_count', 3)),
                                   prev_settings.get('delimiter', '-'),
                                   prev_settings.get('include_number', True),
@@ -160,7 +161,7 @@ def create():
     sg.theme('DarkBlack')
     settings = sg.UserSettings(filename='user/settings.json', autosave=True)
 
-    window = create_window_layout(settings)
+    window = create_gen_window(settings)
 
     # Event Loop
     while True:
@@ -175,9 +176,9 @@ def create():
             n = fix_num(values['-WORD COUNT-'])
 
             passphrase = generate(n,
-                                             values['-DELIMITER-'],
-                                             values['-INCLUDE NUMBER-'],
-                                             values['-INCLUDE UPPERCASE-'])
+                                  values['-DELIMITER-'],
+                                  values['-INCLUDE NUMBER-'],
+                                  values['-INCLUDE UPPERCASE-'])
 
             append_history(passphrase)
             window['-PASSWORD HISTORY-'].update(load_history())
