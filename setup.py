@@ -21,7 +21,12 @@ def create_master_password():
             sg.popup('Password length must be 8 or greater.')
             continue
 
-        return password
+        # confirm password
+        if sg.popup_ok_cancel(
+                "IMPORTANT:\nMaster password CANNOT be restored. If you lose it, you lose access to all accounts"
+                " saved in your vault. \n\nClick OK to proceed."
+        ) == 'OK':
+            return password
 
 
 def setup_done():
