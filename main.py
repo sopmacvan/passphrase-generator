@@ -1,7 +1,8 @@
-import pass_gen
 import PySimpleGUI as sg
 from pysqlitecipher import sqlitewrapper
 from setup import setup_done
+import pass_gen
+import pass_vault
 
 
 def authenticate():
@@ -55,8 +56,8 @@ def main():
 
 
 if __name__ == '__main__':
+    sg.theme('DarkBlack')
     if setup_done():
-        sg.theme('DarkBlack')
         authenticate()
         main()
     else:

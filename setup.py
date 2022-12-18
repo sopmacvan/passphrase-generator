@@ -41,7 +41,7 @@ def setup():
         sg.popup('Setup is already done.')
     else:
         # create master password
-        password, password_hashed = create_master_password()
+        password = create_master_password()
 
         # create database and protect w/ master password
         obj = sqlitewrapper.SqliteCipher(dataBasePath="user/vault.db", checkSameThread=False, password=password)
