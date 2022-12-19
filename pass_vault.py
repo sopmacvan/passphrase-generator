@@ -1,5 +1,4 @@
 import PySimpleGUI as sg
-from pysqlitecipher import sqlitewrapper
 import pyperclip
 
 
@@ -64,7 +63,8 @@ def update_account(id_value, name, username, password, vault):
 
 
 def delete_account(id_value, vault):
-    vault.deleteDataInTable('accounts', id_value, commit=True, raiseError=True, updateId=True)
+    if sg.popup_ok_cancel('Are you sure you want to delete this?', title='Delete') == 'OK':
+        vault.deleteDataInTable('accounts', id_value, commit=True, raiseError=True, updateId=True)
 
 
 # ---------- USER INTERFACE ----------#
@@ -98,8 +98,6 @@ def create_vault_window(vault):
         # See if window was closed
         if event == sg.WIN_CLOSED:
             break
-        if event == '-TABLE-':
-            print(values['-TABLE-'])
 
         if event == '-CREATE-':
             create_account(vault)
@@ -126,13 +124,10 @@ def create_vault_window(vault):
 
             id_value = values['-TABLE-'][0]
 
-            print('before', len(table_rows))
             delete_account(id_value, vault)
             # refresh table
             _, table_rows = read_accounts(vault)
             window['-TABLE-'].update(values=table_rows)
-
-            print('after', len(table_rows))
 
         if event == '-COPY USERNAME-':
             if no_row_selected():

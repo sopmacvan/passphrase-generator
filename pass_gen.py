@@ -84,16 +84,22 @@ def clear_history():
         f.write('')
 
 
-# ---------- USER INTERFACE AND EVENT LOOP ----------#
+# ---------- USER INTERFACE ----------#
 
-def create_gen_window(prev_settings):
-    initial_passphrase = generate(fix_num(prev_settings.get('word_count', 3)),
-                                  prev_settings.get('delimiter', '-'),
-                                  prev_settings.get('include_number', True),
-                                  prev_settings.get('include_uppercase', True))
+def create_gen_window():
+    """Create passphrase generator window w/c can generate passphrase, copy passphrase, and
+    has customizations and history"""
+
+    settings = sg.UserSettings(filename='user/settings.json', autosave=True)
+
+    initial_passphrase = generate(fix_num(settings.get('word_count', 3)),
+                                  settings.get('delimiter', '-'),
+                                  settings.get('include_number', True),
+                                  settings.get('include_uppercase', True))
     append_history(initial_passphrase)
 
-    # Define the window's layout
+    # ---------- WINDOW LAYOUT ----------#
+
     layout = [
         # Custom exit button
         # [sg.Button('x',key='-EXIT-')],
@@ -119,11 +125,11 @@ def create_gen_window(prev_settings):
                       [sg.Text('Include Uppercase', font=('Tomorrow', 20))]
                   ]), sg.Column([
                       # Inputs & Checkbox
-                      [sg.Input(size=(2, 1), default_text=fix_num(prev_settings.get('word_count', 3)),
+                      [sg.Input(size=(2, 1), default_text=fix_num(settings.get('word_count', 3)),
                                 key='-WORD COUNT-')],
-                      [sg.Input(size=(2, 1), default_text=prev_settings.get('delimiter', '-'), key='-DELIMITER-')],
-                      [sg.Checkbox('', default=prev_settings.get('include_number', True), key='-INCLUDE NUMBER-')],
-                      [sg.Checkbox('', default=prev_settings.get('include_uppercase', True),
+                      [sg.Input(size=(2, 1), default_text=settings.get('delimiter', '-'), key='-DELIMITER-')],
+                      [sg.Checkbox('', default=settings.get('include_number', True), key='-INCLUDE NUMBER-')],
+                      [sg.Checkbox('', default=settings.get('include_uppercase', True),
                                    key='-INCLUDE UPPERCASE-')],
 
                   ])]],
@@ -144,7 +150,7 @@ def create_gen_window(prev_settings):
     ]
 
     # UI: Set Window Size & BG Color
-    return sg.Window('Passphrase Generator', layout, size=(430, 850), background_color='#000000')
+    window = sg.Window('Pass Generator', layout, size=(430, 850), background_color='#000000')
 
     # UI: For borderless window
 
@@ -156,14 +162,8 @@ def create_gen_window(prev_settings):
     # grab_anywhere=True,
     # default_button_element_size=(12, 1)
 
+    # ---------- EVENT LOOP ----------#
 
-def create():
-    sg.theme('DarkBlack')
-    settings = sg.UserSettings(filename='user/settings.json', autosave=True)
-
-    window = create_gen_window(settings)
-
-    # Event Loop
     while True:
         event, values = window.read()
         # See if window was closed

@@ -14,7 +14,7 @@ def create_master_password():
         return len(password) > 7
 
     while True:
-        password = sg.popup_get_text('Setup: Create your Master Password')
+        password = sg.popup_get_text('Setup: Create your Master Password', title='Setup')
         if password is None:
             quit()
         if not length_greater_than_7(password):
@@ -25,7 +25,7 @@ def create_master_password():
         if sg.popup_ok_cancel(
                 "IMPORTANT:\nMaster password CANNOT be restored. If you lose it, you lose access to all accounts"
                 " saved in your vault. \n\nClick OK to proceed."
-        ) == 'OK':
+        , title='Reminder') == 'OK':
             return password
 
 

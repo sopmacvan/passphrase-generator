@@ -19,5 +19,7 @@ generates a random passphrase (+ password vault)
 
 ### TODO:
 1. ~~Authentication with master password~~
-2. Create CRUD operations in pass_vault for managing passwords.
-3. Fix layout sizes and stuffs
+2. ~~Create CRUD operations in pass_vault for managing password accounts.~~
+3. Add search feature for pass vault.
+4. Add more restrictions for master password creation such as symbols, numbers, uppercase in setup.py
+5. Fix layout sizes and stuffs
