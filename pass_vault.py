@@ -28,6 +28,14 @@ def create_account(vault):
     window.close()
 
 
+def read_accounts(vault):
+    # read data
+    data = vault.getDataFromTable('accounts', raiseConversionError=True, omitID=False)
+    table_header = data[0]
+    table_rows = data[1]
+    return table_header, table_rows
+
+
 def update_account(id_value, name, username, password, vault):
     layout = [
         [sg.Text('Edit old account.')],
@@ -59,26 +67,17 @@ def delete_account(id_value, vault):
     vault.deleteDataInTable('accounts', id_value, commit=True, raiseError=True, updateId=True)
 
 
-# ---------- Main window ----------#
+# ---------- USER INTERFACE ----------#
 
-def create_vault_window():
-    def refresh_table():
-        data = vault.getDataFromTable('accounts', raiseConversionError=True, omitID=False)
-        table_header = data[0]
-        table_rows = data[1]
-        window['-TABLE-'].update(values=table_rows)
+def create_vault_window(vault):
+    """Create vault window for managing account names, usernames, and passwords"""
+    table_header, table_rows = read_accounts(vault)
 
     def no_row_selected():
         return len(values['-TABLE-']) == 0
 
-    login_pass = '12345678'
-    vault = sqlitewrapper.SqliteCipher(dataBasePath="user/vault.db", checkSameThread=False, password=login_pass)
-    # read data
-    data = vault.getDataFromTable('accounts', raiseConversionError=True, omitID=False)
-    table_header = data[0]
-    table_rows = data[1]
+    # ---------- WINDOW LAYOUT ----------#
 
-    # Define the window's layout
     accounts_table = [
         sg.Table(values=table_rows, headings=table_header, auto_size_columns=False,
                  num_rows=10, justification='center', enable_events=True,
@@ -99,10 +98,14 @@ def create_vault_window():
         # See if window was closed
         if event == sg.WIN_CLOSED:
             break
+        if event == '-TABLE-':
+            print(values['-TABLE-'])
 
         if event == '-CREATE-':
             create_account(vault)
-            refresh_table()
+            # refresh table
+            _, table_rows = read_accounts(vault)
+            window['-TABLE-'].update(values=table_rows)
 
         if event == '-EDIT-':
             if no_row_selected():
@@ -113,7 +116,9 @@ def create_vault_window():
             username = table_rows[id_value][-2]
             password = table_rows[id_value][-1]
             update_account(id_value, name, username, password, vault)
-            refresh_table()
+            # refresh table
+            _, table_rows = read_accounts(vault)
+            window['-TABLE-'].update(values=table_rows)
 
         if event == '-DELETE-':
             if no_row_selected():
@@ -121,8 +126,13 @@ def create_vault_window():
 
             id_value = values['-TABLE-'][0]
 
+            print('before', len(table_rows))
             delete_account(id_value, vault)
-            refresh_table()
+            # refresh table
+            _, table_rows = read_accounts(vault)
+            window['-TABLE-'].update(values=table_rows)
+
+            print('after', len(table_rows))
 
         if event == '-COPY USERNAME-':
             if no_row_selected():
@@ -136,15 +146,9 @@ def create_vault_window():
         if event == '-COPY PASSWORD-':
             if no_row_selected():
                 continue
-
             id_value = values['-TABLE-'][0]
 
             password = table_rows[id_value][-1]
             pyperclip.copy(password)
     # Close window
     window.close()
-
-
-if __name__ == '__main__':
-    sg.theme('DarkBlack')
-    create_vault_window()
