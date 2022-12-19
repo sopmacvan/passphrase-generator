@@ -20,37 +20,36 @@ def authenticate():
 
         # check if hashed login and master password matches
         if login_pass == master_pass:
-            print('Login SUCCESSFUL')
-            break
+            return password
         else:
-            print('Login FAILED')
             sg.popup_error('Login FAILED!!')
 
 
-def create_menu_window():
+# ---------- USER INTERFACE ----------#
+
+def create_menu_window(login_pass):
     """Create menu window which has the open vault, generate passphrase, and exit"""
-    # Define the window's layout
+    # ---------- WINDOW LAYOUT ----------#
+
     layout = [
         [sg.Button('Open Vault', key='-PASS VAULT-')],
         [sg.Button('Generate Passphrase', key='-PASS GEN-')],
         [sg.Button('Exit', key='-EXIT-')],
     ]
-    return sg.Window('Passphrase Generator', layout)
+    window = sg.Window('Menu', layout)
 
-
-def main():
-    window = create_menu_window()
-
-    # Event Loop
+    # ---------- EVENT LOOP ----------#
     while True:
         event, values = window.read()
         # See if window was closed
         if event in (sg.WIN_CLOSED, '-EXIT-'):
             break
         if event == '-PASS VAULT-':
-            pass
+            vault = sqlitewrapper.SqliteCipher(dataBasePath="user/vault.db", checkSameThread=False, password=login_pass)
+
+            pass_vault.create_vault_window(vault)
         if event == '-PASS GEN-':
-            pass_gen.create()
+            pass_gen.create_gen_window()
     # Close window
     window.close()
 
@@ -58,7 +57,7 @@ def main():
 if __name__ == '__main__':
     sg.theme('DarkBlack')
     if setup_done():
-        authenticate()
-        main()
+        login_pass = authenticate()
+        create_menu_window(login_pass)
     else:
-        sg.popup("Please run setup.py first.")
+        sg.popup("Please run setup.py first.", title='Missing components')
