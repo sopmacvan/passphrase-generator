@@ -117,22 +117,19 @@ def create_gen_window():
                    size=(100, 2))],
 
         [sg.Frame(title='Customize', background_color='#000000', font=('Tomorrow', 20),
-                  layout=[[sg.Column([
-                      # Text:
-                      [sg.Text('Set word count', background_color='#000000', font=('Tomorrow', 20))],
-                      [sg.Text('Set delimiter', background_color='#000000', font=('Tomorrow', 20))],
-                      [sg.Text('Include number', background_color='#000000', font=('Tomorrow', 20))],
-                      [sg.Text('Include Uppercase', font=('Tomorrow', 20))]
-                  ]), sg.Column([
-                      # Inputs & Checkbox
-                      [sg.Input(size=(2, 1), default_text=fix_num(settings.get('word_count', 3)),
+                  layout=[
+                      # Text + Inputs and Checkbox:
+                      [sg.Text('Set word count', background_color='#000000', font=('Tomorrow', 20), size=(20, 1)),
+                       sg.Input(size=(2, 1), default_text=fix_num(settings.get('word_count', 3)),
                                 key='-WORD COUNT-')],
-                      [sg.Input(size=(2, 1), default_text=settings.get('delimiter', '-'), key='-DELIMITER-')],
-                      [sg.Checkbox('', default=settings.get('include_number', True), key='-INCLUDE NUMBER-')],
-                      [sg.Checkbox('', default=settings.get('include_uppercase', True),
-                                   key='-INCLUDE UPPERCASE-')],
-
-                  ])]],
+                      [sg.Text('Set delimiter', background_color='#000000', font=('Tomorrow', 20), size=(20, 1)),
+                       sg.Input(size=(2, 1), default_text=settings.get('delimiter', '-'), key='-DELIMITER-')],
+                      [sg.Text('Include number', background_color='#000000', font=('Tomorrow', 20), size=(20, 1)),
+                       sg.Checkbox('', default=settings.get('include_number', True), key='-INCLUDE NUMBER-')],
+                      [sg.Text('Include Uppercase', font=('Tomorrow', 20), size=(20, 1)),
+                       sg.Checkbox('', default=settings.get('include_uppercase', True),
+                                   key='-INCLUDE UPPERCASE-')]
+                  ],
                   expand_x=True)],
         # Text:
         [sg.Text('Password History', enable_events=True, tooltip='Show/hide password history', key='-SHOW HISTORY-',
