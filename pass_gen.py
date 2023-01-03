@@ -136,8 +136,13 @@ def create_gen_window():
                  font=('Tomorrow', 20))],
         [sg.pin(sg.Column([
             # Listbox :
+
             [sg.Listbox(values=load_history(), size=(0, 3), font=('Tomorrow', 16), expand_x=True, enable_events=True,
                         key='-PASSWORD HISTORY-')],
+
+            [sg.Listbox(values=load_history(), size=(0, 5), font=('Tomorrow', 16), tooltip='Click to copy'
+                        ,expand_x=True, enable_events=True, key='-PASSWORD HISTORY-')],
+
             # Clear History Button
             [sg.Button('Clear History', key='-CLEAR HISTORY-', button_color=('#F8EF00', 'black'), font=('Tomorrow', 16),
                        size=(100, 1))]

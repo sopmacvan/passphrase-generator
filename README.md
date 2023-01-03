@@ -21,4 +21,5 @@ generates a random passphrase (+ password vault)
 3. Add search feature for pass vault.
 4. Add more restrictions for master password creation such as symbols, numbers, uppercase in setup.py
 5. Add option to change master password.
-6. Fix layout sizes and stuffs
+6. Move Password History to database.
+7. Fix layout sizes and stuffs
