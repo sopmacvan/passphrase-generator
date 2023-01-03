@@ -55,7 +55,7 @@ def setup():
         col_list = [["name", "TEXT"], ["username", "TEXT"], ["password", "TEXT"], ]
         obj.createTable('accounts', col_list, makeSecure=False, commit=True)
 
-        sg.popup('Setup done! Now run main.py')
+        sg.popup('Setup done!')
 
 
 if __name__ == '__main__':
