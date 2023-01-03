@@ -1,9 +1,7 @@
 import PySimpleGUI as sg
 import pyperclip
 
-
 # ---------- CRUD operations ----------#
-
 def create_account(vault):
     layout = [
         [sg.Text('Create new account.')],
@@ -85,11 +83,16 @@ def create_vault_window(vault):
                  key='-TABLE-')]
 
     layout = [
-        [sg.Button('Create', key='-CREATE-'), sg.Button('Edit', key='-EDIT-'), sg.Button('Delete', key='-DELETE-')],
+        # Create, Edit, Delete Button
+        [sg.Button('Create', key='-CREATE-', button_color=('black', '#F8EF00'), font=('Helvetica', 12)),
+         sg.Button('Edit', key='-EDIT-', button_color=('black', '#F8EF00'), font=('Helvetica', 12)),
+         sg.Button('Delete', key='-DELETE-', button_color=('black', '#F8EF00'), font=('Helvetica', 12))],
         [accounts_table],
-        [sg.Button('Copy Username', key='-COPY USERNAME-'), sg.Button('Copy Password', key='-COPY PASSWORD-')],
-
+        # Copy Username and Copy Password Button
+        [sg.Button('Copy Username', key='-COPY USERNAME-', button_color=('black', '#F8EF00'), font=('Helvetica', 12)),
+         sg.Button('Copy Password', key='-COPY PASSWORD-', button_color=('black', '#F8EF00'), font=('Helvetica', 12))],
     ]
+
     window = sg.Window('Pass Vault', layout)
 
     # ---------- EVENT LOOP ----------#

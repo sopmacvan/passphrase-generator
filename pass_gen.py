@@ -105,16 +105,16 @@ def create_gen_window():
         # [sg.Button('x',key='-EXIT-')],
         # Passphrase Generator Top-Left Text
         [sg.Text('PASSPHRASE\nGENERATOR', background_color='#000000', text_color='#F8EF00',
-                 font=('Tomorrow', 40, 'bold'), size=(100, 2))],
+                 font=('Tomorrow', 35, 'bold'), size=(40, 2))],
         # Initial Passphrase
         [sg.Text(initial_passphrase, key='-PASSPHRASE-', background_color='#001819', border_width='32',
-                 text_color='#00F0FF', font=('Tomorrow', 16), size=(100, 1))],
+                 text_color='#00F0FF', font=('Tomorrow', 14), size=(60, 1))],
         # Generate Password Button
-        [sg.Button('Generate Password', key='-GENERATE-', button_color=('black', '#F8EF00'), font=('Helvetica', 16),
-                   size=(100, 2))],
+        [sg.Button('Generate Password', key='-GENERATE-', button_color=('black', '#F8EF00'), font=('Helvetica', 12),
+                   size=(50, 2))],
         # Copy Passphrase Button
-        [sg.Button('Copy Password', key='-COPY-', button_color=('black', '#F8EF00'), font=('Helvetica', 16),
-                   size=(100, 2))],
+        [sg.Button('Copy Password', key='-COPY-', button_color=('black', '#F8EF00'), font=('Helvetica', 12),
+                   size=(50, 2))],
 
         [sg.Frame(title='Customize', background_color='#000000', font=('Tomorrow', 20),
                   layout=[
@@ -136,7 +136,7 @@ def create_gen_window():
                  font=('Tomorrow', 20))],
         [sg.pin(sg.Column([
             # Listbox :
-            [sg.Listbox(values=load_history(), size=(0, 5), font=('Tomorrow', 16), expand_x=True, enable_events=True,
+            [sg.Listbox(values=load_history(), size=(0, 3), font=('Tomorrow', 16), expand_x=True, enable_events=True,
                         key='-PASSWORD HISTORY-')],
             # Clear History Button
             [sg.Button('Clear History', key='-CLEAR HISTORY-', button_color=('#F8EF00', 'black'), font=('Tomorrow', 16),
@@ -147,7 +147,7 @@ def create_gen_window():
     ]
 
     # UI: Set Window Size & BG Color
-    window = sg.Window('Pass Generator', layout, size=(430, 850), background_color='#000000')
+    window = sg.Window('Pass Generator', layout, size=(430, 750), background_color='#000000')
 
     # UI: For borderless window
 

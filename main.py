@@ -22,7 +22,7 @@ def authenticate():
         if login_pass == master_pass:
             return password
         else:
-            sg.popup_error('Login FAILED!!')
+            sg.popup_error('Login failed!')
 
 
 # ---------- USER INTERFACE ----------#
@@ -32,11 +32,17 @@ def create_menu_window(login_pass):
     # ---------- WINDOW LAYOUT ----------#
 
     layout = [
-        [sg.Button('Open Vault', key='-PASS VAULT-')],
-        [sg.Button('Generate Passphrase', key='-PASS GEN-')],
-        [sg.Button('Exit', key='-EXIT-')],
+        # Button for Vault
+        [sg.Button('Open Vault', key='-PASS VAULT-', button_color=('black', '#F8EF00'), font=('Helvetica', 12),
+                   size=(50, 2))],
+        # Button for Generate Passphrase
+        [sg.Button('Generate Passphrase', key='-PASS GEN-', button_color=('black', '#F8EF00'), font=('Helvetica', 12),
+                   size=(50, 2))],
+        # Button for Exit
+        [sg.Button('Exit', key='-EXIT-', button_color=('white', '#Ff0000'), font=('Helvetica', 12),
+                   size=(50, 2))],
     ]
-    window = sg.Window('Menu', layout)
+    window = sg.Window('PG Menu', layout)
 
     # ---------- EVENT LOOP ----------#
     while True:
@@ -60,4 +66,4 @@ if __name__ == '__main__':
         login_pass = authenticate()
         create_menu_window(login_pass)
     else:
-        sg.popup("Please run setup.py first.", title='Missing components')
+        sg.popup("Please run setup.py first!", title='Missing components')
