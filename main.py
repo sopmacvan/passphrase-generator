@@ -63,12 +63,6 @@ def create_menu_window(login_pass):
 if __name__ == '__main__':
     sg.theme('DarkBlack')
 
-    if setup_done():
-        login_pass = authenticate()
-        create_menu_window(login_pass)
-    else:
-        sg.popup("Please run setup.py first!", title='Missing components')
-
     if not setup_done():
         setup()
 
